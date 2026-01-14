@@ -185,24 +185,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     final familyProvider = Provider.of<FamilyMemberProvider>(
                         context,
                         listen: false);
-                    bool success =
+                    final newMemberId =
                         await familyProvider.addFamilyMember(newMember);
 
-                    if (success) {
+                    if (newMemberId != null) {
                       Navigator.pop(dialogContext);
                       
                       // Wait for the family members list to update
-                      final memberName = nameController.text.trim();
-                      final memberColorHex = ColorUtils.colorToHex(selectedColor);
                       await familyProvider.waitForLoading();
 
-                      // Find the newly created member and select it
+                      // Find the newly created member by ID and select it
                       if (context.mounted) {
                         final members = familyProvider.familyMembers;
                         final createdMember = members.firstWhere(
-                          (m) =>
-                              m.name == memberName &&
-                              m.color == memberColorHex,
+                          (m) => m.id == newMemberId,
                           orElse: () => members.last,
                         );
                         _selectMember(context, createdMember);

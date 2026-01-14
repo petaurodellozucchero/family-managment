@@ -285,9 +285,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     final provider = Provider.of<FamilyMemberProvider>(
                         context,
                         listen: false);
-                    bool success = await provider.addFamilyMember(newMember);
+                    final newMemberId = await provider.addFamilyMember(newMember);
 
-                    if (success) {
+                    if (newMemberId != null) {
                       Navigator.pop(dialogContext);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(

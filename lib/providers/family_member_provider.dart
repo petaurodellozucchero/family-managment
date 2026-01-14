@@ -57,8 +57,23 @@ class FamilyMemberProvider with ChangeNotifier {
   }
 
   /// Add a new family member
-  Future<bool> addFamilyMember(FamilyMember member) async {
-    return _performOperation(() => _firebaseService.addFamilyMember(member));
+  /// Returns the ID of the newly created member, or null if failed
+  Future<String?> addFamilyMember(FamilyMember member) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    final result = await _firebaseService.addFamilyMember(member);
+
+    _isLoading = false;
+    if (result == null) {
+      _error = 'Failed to add family member';
+      notifyListeners();
+      return null;
+    }
+
+    notifyListeners();
+    return result;
   }
 
   /// Update an existing family member
