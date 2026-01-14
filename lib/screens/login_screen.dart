@@ -197,11 +197,26 @@ class _LoginScreenState extends State<LoginScreen> {
                       // Find the newly created member by ID and select it
                       if (context.mounted) {
                         final members = familyProvider.familyMembers;
-                        final createdMember = members.firstWhere(
-                          (m) => m.id == newMemberId,
-                          orElse: () => members.last,
-                        );
-                        _selectMember(context, createdMember);
+                        FamilyMember? createdMember;
+                        try {
+                          createdMember = members.firstWhere(
+                            (m) => m.id == newMemberId,
+                          );
+                        } catch (_) {
+                          // Member not found, which shouldn't happen but handle gracefully
+                          createdMember = null;
+                        }
+                        
+                        if (createdMember != null) {
+                          _selectMember(context, createdMember);
+                        } else {
+                          // Fallback: Show error if member not found
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Profile created. Please select your profile.')),
+                          );
+                          return;
+                        }
                       }
 
                       if (context.mounted) {
