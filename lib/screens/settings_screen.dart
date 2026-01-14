@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/family_member_provider.dart';
+import '../providers/current_user_provider.dart';
 import '../models/family_member_model.dart';
 
 /// Settings screen for managing family members
@@ -23,6 +24,54 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Current User Section
+            Consumer<CurrentUserProvider>(
+              builder: (context, currentUserProvider, child) {
+                final currentUser = currentUserProvider.currentUser;
+                if (currentUser == null) return const SizedBox.shrink();
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Current User',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Card(
+                      child: ListTile(
+                        leading: Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: _hexToColor(currentUser.color),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.person, color: Colors.white),
+                        ),
+                        title: Text(
+                          currentUser.name,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        subtitle: const Text('Tap to switch user'),
+                        trailing: const Icon(Icons.swap_horiz),
+                        onTap: () => _confirmSwitchUser(context),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    const Divider(),
+                    const SizedBox(height: 16),
+                  ],
+                );
+              },
+            ),
+
             // Family Members Section
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -127,6 +176,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void _confirmSwitchUser(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: const Text('Switch User'),
+          content: const Text(
+              'Are you sure you want to switch to a different user? You will be redirected to the login screen.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                Navigator.pop(dialogContext);
+                final currentUserProvider =
+                    Provider.of<CurrentUserProvider>(context, listen: false);
+                await currentUserProvider.clearCurrentUser();
+              },
+              child: const Text('Switch User'),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -336,6 +413,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _confirmDeleteMember(BuildContext context, FamilyMember member) {
+    // Check if user is trying to delete themselves
+    final currentUserProvider =
+        Provider.of<CurrentUserProvider>(context, listen: false);
+    if (currentUserProvider.currentUser?.id == member.id) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text(
+                'You cannot delete yourself. Switch to another user first.')),
+      );
+      return;
+    }
+
     showDialog(
       context: context,
       builder: (dialogContext) {

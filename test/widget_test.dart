@@ -2,6 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:family_managment/models/event_model.dart';
 import 'package:family_managment/models/shopping_item_model.dart';
 import 'package:family_managment/models/family_member_model.dart';
+import 'package:family_managment/providers/current_user_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   group('Event Model Tests', () {
@@ -120,6 +122,85 @@ void main() {
       expect(updatedMember.name, 'Jane');
       expect(updatedMember.color, '#FFEB3B');
       expect(updatedMember.id, '1');
+    });
+  });
+
+  group('CurrentUserProvider Tests', () {
+    setUp(() {
+      SharedPreferences.setMockInitialValues({});
+    });
+
+    test('Provider starts with no user and not initialized', () {
+      final provider = CurrentUserProvider();
+
+      expect(provider.currentUser, null);
+      expect(provider.hasUser, false);
+      expect(provider.isInitialized, false);
+    });
+
+    test('markInitialized sets isInitialized to true', () {
+      final provider = CurrentUserProvider();
+
+      provider.markInitialized();
+
+      expect(provider.isInitialized, true);
+      expect(provider.hasUser, false);
+    });
+
+    test('initializeWithMember sets the current user', () {
+      final provider = CurrentUserProvider();
+      final member = FamilyMember(
+        id: 'test-id',
+        name: 'Test User',
+        color: '#FF0000',
+      );
+
+      provider.initializeWithMember(member);
+
+      expect(provider.currentUser, member);
+      expect(provider.hasUser, true);
+      expect(provider.isInitialized, true);
+    });
+
+    test('setCurrentUser sets user and saves to preferences', () async {
+      final provider = CurrentUserProvider();
+      final member = FamilyMember(
+        id: 'test-id',
+        name: 'Test User',
+        color: '#FF0000',
+      );
+
+      await provider.setCurrentUser(member);
+
+      expect(provider.currentUser, member);
+      expect(provider.hasUser, true);
+      expect(provider.isInitialized, true);
+
+      // Verify saved to preferences
+      final savedId = await provider.loadSavedUserId();
+      expect(savedId, 'test-id');
+    });
+
+    test('clearCurrentUser removes user and clears preferences', () async {
+      final provider = CurrentUserProvider();
+      final member = FamilyMember(
+        id: 'test-id',
+        name: 'Test User',
+        color: '#FF0000',
+      );
+
+      await provider.setCurrentUser(member);
+      expect(provider.hasUser, true);
+
+      await provider.clearCurrentUser();
+
+      expect(provider.currentUser, null);
+      expect(provider.hasUser, false);
+      expect(provider.isInitialized, true);
+
+      // Verify cleared from preferences
+      final savedId = await provider.loadSavedUserId();
+      expect(savedId, null);
     });
   });
 }
