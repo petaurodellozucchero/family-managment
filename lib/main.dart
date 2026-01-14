@@ -16,7 +16,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,19 +34,19 @@ class MyApp extends StatelessWidget {
             seedColor: Colors.blue,
             brightness: Brightness.light,
           ),
-          appBarTheme: AppBarTheme(
+          appBarTheme: const AppBarTheme(
             centerTitle: true,
             elevation: 2,
             backgroundColor: Colors.blue,
             foregroundColor: Colors.white,
           ),
-          cardTheme: CardTheme(
+          cardTheme: CardThemeData(
             elevation: 2,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
           ),
-          floatingActionButtonTheme: FloatingActionButtonThemeData(
+          floatingActionButtonTheme: const FloatingActionButtonThemeData(
             backgroundColor: Colors.blue,
             foregroundColor: Colors.white,
           ),
@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-          textTheme: TextTheme(
+          textTheme: const TextTheme(
             bodyLarge: TextStyle(fontSize: 18),
             bodyMedium: TextStyle(fontSize: 16),
           ),
@@ -71,17 +71,17 @@ class MyApp extends StatelessWidget {
             seedColor: Colors.blue,
             brightness: Brightness.dark,
           ),
-          appBarTheme: AppBarTheme(
+          appBarTheme: const AppBarTheme(
             centerTitle: true,
             elevation: 2,
           ),
-          cardTheme: CardTheme(
+          cardTheme: CardThemeData(
             elevation: 2,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
           ),
-          textTheme: TextTheme(
+          textTheme: const TextTheme(
             bodyLarge: TextStyle(fontSize: 18),
             bodyMedium: TextStyle(fontSize: 16),
           ),
@@ -95,7 +95,7 @@ class MyApp extends StatelessWidget {
 
 /// Wrapper to handle authentication
 class AuthWrapper extends StatefulWidget {
-  const AuthWrapper({Key? key}) : super(key: key);
+  const AuthWrapper({super.key});
 
   @override
   State<AuthWrapper> createState() => _AuthWrapperState();
@@ -136,7 +136,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
   @override
   Widget build(BuildContext context) {
     if (_isInitializing) {
-      return Scaffold(
+      return const Scaffold(
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -159,7 +159,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
 
 /// Main screen with bottom navigation
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  const MainScreen({super.key});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -169,9 +169,9 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    CalendarScreen(),
-    ShoppingListScreen(),
-    SettingsScreen(),
+    const CalendarScreen(),
+    const ShoppingListScreen(),
+    const SettingsScreen(),
   ];
 
   void _onItemTapped(int index) {

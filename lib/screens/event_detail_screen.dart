@@ -13,10 +13,10 @@ class EventDetailScreen extends StatefulWidget {
   final DateTime? initialDate;
 
   const EventDetailScreen({
-    Key? key,
+    super.key,
     this.event,
     this.initialDate,
-  }) : super(key: key);
+  });
 
   @override
   State<EventDetailScreen> createState() => _EventDetailScreenState();
@@ -65,9 +65,9 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
       // Create mode
       DateTime initial = widget.initialDate ?? DateTime.now();
       _startDate = initial;
-      _startTime = TimeOfDay(hour: 9, minute: 0);
+      _startTime = const TimeOfDay(hour: 9, minute: 0);
       _endDate = initial;
-      _endTime = TimeOfDay(hour: 10, minute: 0);
+      _endTime = const TimeOfDay(hour: 10, minute: 0);
     }
   }
 
@@ -87,7 +87,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
         _isLoading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error loading family members')),
+        const SnackBar(content: Text('Error loading family members')),
       );
     }
   }
@@ -163,7 +163,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
 
     if (_selectedMemberId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please select a family member')),
+        const SnackBar(content: Text('Please select a family member')),
       );
       return;
     }
@@ -187,7 +187,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
 
     if (endDateTime.isBefore(startDateTime)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('End time must be after start time')),
+        const SnackBar(content: Text('End time must be after start time')),
       );
       return;
     }
@@ -233,7 +233,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to save event')),
+        const SnackBar(content: Text('Failed to save event')),
       );
     }
   }
@@ -245,16 +245,16 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete Event'),
-          content: Text('Are you sure you want to delete this event?'),
+          title: const Text('Delete Event'),
+          content: const Text('Are you sure you want to delete this event?'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context, true),
-              child: Text('Delete', style: TextStyle(color: Colors.red)),
+              child: const Text('Delete', style: TextStyle(color: Colors.red)),
             ),
           ],
         );
@@ -268,11 +268,11 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
       if (success) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Event deleted successfully')),
+          const SnackBar(content: Text('Event deleted successfully')),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to delete event')),
+          const SnackBar(content: Text('Failed to delete event')),
         );
       }
     }
@@ -284,21 +284,21 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
       appBar: AppBar(
         title: Text(
           widget.event != null ? 'Edit Event' : 'New Event',
-          style: TextStyle(fontSize: 22),
+          style: const TextStyle(fontSize: 22),
         ),
         actions: [
           if (widget.event != null)
             IconButton(
-              icon: Icon(Icons.delete),
+              icon: const Icon(Icons.delete),
               tooltip: 'Delete Event',
               onPressed: _deleteEvent,
             ),
         ],
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -307,13 +307,13 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                     // Title
                     TextFormField(
                       controller: _titleController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Title',
                         labelStyle: TextStyle(fontSize: 18),
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.title),
                       ),
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return 'Please enter a title';
@@ -321,104 +321,104 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     
                     // Description
                     TextFormField(
                       controller: _descriptionController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Description',
                         labelStyle: TextStyle(fontSize: 18),
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.description),
                       ),
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                       maxLines: 3,
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     
                     // Start Date and Time
-                    Text(
+                    const Text(
                       'Start',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Row(
                       children: [
                         Expanded(
                           child: OutlinedButton.icon(
-                            icon: Icon(Icons.calendar_today),
+                            icon: const Icon(Icons.calendar_today),
                             label: Text(
                               DateFormat('MMM d, y').format(_startDate),
-                              style: TextStyle(fontSize: 16),
+                              style: const TextStyle(fontSize: 16),
                             ),
                             onPressed: _selectStartDate,
                           ),
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         Expanded(
                           child: OutlinedButton.icon(
-                            icon: Icon(Icons.access_time),
+                            icon: const Icon(Icons.access_time),
                             label: Text(
                               _startTime.format(context),
-                              style: TextStyle(fontSize: 16),
+                              style: const TextStyle(fontSize: 16),
                             ),
                             onPressed: _selectStartTime,
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     
                     // End Date and Time
-                    Text(
+                    const Text(
                       'End',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Row(
                       children: [
                         Expanded(
                           child: OutlinedButton.icon(
-                            icon: Icon(Icons.calendar_today),
+                            icon: const Icon(Icons.calendar_today),
                             label: Text(
                               DateFormat('MMM d, y').format(_endDate),
-                              style: TextStyle(fontSize: 16),
+                              style: const TextStyle(fontSize: 16),
                             ),
                             onPressed: _selectEndDate,
                           ),
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         Expanded(
                           child: OutlinedButton.icon(
-                            icon: Icon(Icons.access_time),
+                            icon: const Icon(Icons.access_time),
                             label: Text(
                               _endTime.format(context),
-                              style: TextStyle(fontSize: 16),
+                              style: const TextStyle(fontSize: 16),
                             ),
                             onPressed: _selectEndTime,
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     
                     // Family Member
                     DropdownButtonFormField<String>(
-                      value: _selectedMemberId,
-                      decoration: InputDecoration(
+                      initialValue: _selectedMemberId,
+                      decoration: const InputDecoration(
                         labelText: 'Assign to',
                         labelStyle: TextStyle(fontSize: 18),
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.person),
                       ),
-                      style: TextStyle(fontSize: 18, color: Colors.black87),
+                      style: const TextStyle(fontSize: 18, color: Colors.black87),
                       items: _familyMembers.map((member) {
                         return DropdownMenuItem(
                           value: member.id,
@@ -432,7 +432,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                   shape: BoxShape.circle,
                                 ),
                               ),
-                              SizedBox(width: 8),
+                              const SizedBox(width: 8),
                               Text(member.name),
                             ],
                           ),
@@ -444,19 +444,19 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                         });
                       },
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     
                     // Recurrence
                     DropdownButtonFormField<String>(
-                      value: _selectedRecurrence,
-                      decoration: InputDecoration(
+                      initialValue: _selectedRecurrence,
+                      decoration: const InputDecoration(
                         labelText: 'Recurrence',
                         labelStyle: TextStyle(fontSize: 18),
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.repeat),
                       ),
-                      style: TextStyle(fontSize: 18, color: Colors.black87),
-                      items: [
+                      style: const TextStyle(fontSize: 18, color: Colors.black87),
+                      items: const [
                         DropdownMenuItem(value: 'none', child: Text('None')),
                         DropdownMenuItem(value: 'daily', child: Text('Daily')),
                         DropdownMenuItem(
@@ -470,20 +470,20 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                         });
                       },
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     
                     // Location
                     TextFormField(
                       controller: _locationController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Location (optional)',
                         labelStyle: TextStyle(fontSize: 18),
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.location_on),
                       ),
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                     ),
-                    SizedBox(height: 24),
+                    const SizedBox(height: 24),
                     
                     // Save Button
                     SizedBox(
@@ -493,7 +493,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                         onPressed: _saveEvent,
                         child: Text(
                           widget.event != null ? 'Update Event' : 'Create Event',
-                          style: TextStyle(fontSize: 18),
+                          style: const TextStyle(fontSize: 18),
                         ),
                       ),
                     ),

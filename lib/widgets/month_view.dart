@@ -11,11 +11,11 @@ class MonthView extends StatefulWidget {
   final Function(DateTime) onDaySelected;
 
   const MonthView({
-    Key? key,
+    super.key,
     required this.selectedDate,
     required this.events,
     required this.onDaySelected,
-  }) : super(key: key);
+  });
 
   @override
   State<MonthView> createState() => _MonthViewState();
@@ -71,13 +71,13 @@ class _MonthViewState extends State<MonthView> {
               color: Theme.of(context).primaryColor,
               shape: BoxShape.circle,
             ),
-            markerDecoration: BoxDecoration(
+            markerDecoration: const BoxDecoration(
               color: Colors.blue,
               shape: BoxShape.circle,
             ),
             markersMaxCount: 3,
           ),
-          headerStyle: HeaderStyle(
+          headerStyle: const HeaderStyle(
             formatButtonVisible: false,
             titleCentered: true,
             titleTextStyle: TextStyle(
@@ -99,17 +99,17 @@ class _MonthViewState extends State<MonthView> {
             });
           },
         ),
-        Divider(height: 1),
+        const Divider(height: 1),
         // Selected day events
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: Text(
                   DateFormat('EEEE, MMMM d').format(_selectedDay),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -117,7 +117,7 @@ class _MonthViewState extends State<MonthView> {
               ),
               Expanded(
                 child: selectedDayEvents.isEmpty
-                    ? Center(
+                    ? const Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -131,7 +131,7 @@ class _MonthViewState extends State<MonthView> {
                         ),
                       )
                     : ListView.builder(
-                        padding: EdgeInsets.only(bottom: 8),
+                        padding: const EdgeInsets.only(bottom: 8),
                         itemCount: selectedDayEvents.length,
                         itemBuilder: (context, index) {
                           return EventCard(event: selectedDayEvents[index]);

@@ -4,7 +4,7 @@ import '../models/family_member_model.dart';
 
 /// Settings screen for managing family members
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+  const SettingsScreen({super.key});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -17,47 +17,47 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings', style: TextStyle(fontSize: 22)),
+        title: const Text('Settings', style: TextStyle(fontSize: 22)),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Family Members Section
-            Text(
+            const Text(
               'Family Members',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             StreamBuilder<List<FamilyMember>>(
               stream: _firebaseService.getFamilyMembersStream(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (snapshot.hasError) {
-                  return Text('Error loading family members');
+                  return const Text('Error loading family members');
                 }
 
                 if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return Column(
                     children: [
-                      Text('No family members found'),
-                      SizedBox(height: 16),
+                      const Text('No family members found'),
+                      const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () async {
                           await _firebaseService.initializeDefaultFamilyMembers();
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                                 content: Text('Default family members added')),
                           );
                         },
-                        child: Text('Initialize Default Members'),
+                        child: const Text('Initialize Default Members'),
                       ),
                     ],
                   );
@@ -68,7 +68,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 return Column(
                   children: members.map((member) {
                     return Card(
-                      margin: EdgeInsets.only(bottom: 8),
+                      margin: const EdgeInsets.only(bottom: 8),
                       child: ListTile(
                         leading: Container(
                           width: 40,
@@ -80,7 +80,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                         title: Text(
                           member.name,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
                           ),
@@ -92,25 +92,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 );
               },
             ),
-            SizedBox(height: 32),
+            const SizedBox(height: 32),
             
             // App Information
-            Divider(),
-            SizedBox(height: 16),
-            Text(
+            const Divider(),
+            const SizedBox(height: 16),
+            const Text(
               'About',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 16),
-            ListTile(
+            const SizedBox(height: 16),
+            const ListTile(
               leading: Icon(Icons.info_outline),
               title: Text('Version', style: TextStyle(fontSize: 18)),
               subtitle: Text('1.0.0'),
             ),
-            ListTile(
+            const ListTile(
               leading: Icon(Icons.family_restroom),
               title: Text('Family Management App', style: TextStyle(fontSize: 18)),
               subtitle: Text('Manage your family calendar and shopping list'),

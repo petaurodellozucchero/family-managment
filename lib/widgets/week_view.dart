@@ -9,10 +9,10 @@ class WeekView extends StatelessWidget {
   final List<Event> events;
 
   const WeekView({
-    Key? key,
+    super.key,
     required this.selectedDate,
     required this.events,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +25,16 @@ class WeekView extends StatelessWidget {
       children: [
         // Week header
         Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           color: Theme.of(context).primaryColor.withOpacity(0.1),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.calendar_view_week, size: 20),
-              SizedBox(width: 8),
+              const Icon(Icons.calendar_view_week, size: 20),
+              const SizedBox(width: 8),
               Text(
                 'Week of ${DateFormat('MMM d').format(weekStart)}',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -60,7 +60,7 @@ class WeekView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     color: isToday
                         ? Theme.of(context).primaryColor.withOpacity(0.2)
                         : Colors.grey[100],
@@ -76,7 +76,7 @@ class WeekView extends StatelessWidget {
                                 : Colors.black87,
                           ),
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         Text(
                           DateFormat('MMM d').format(day),
                           style: TextStyle(
@@ -87,15 +87,15 @@ class WeekView extends StatelessWidget {
                           ),
                         ),
                         if (isToday) ...[
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           Container(
                             padding:
-                                EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                             decoration: BoxDecoration(
                               color: Theme.of(context).primaryColor,
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Text(
+                            child: const Text(
                               'Today',
                               style: TextStyle(
                                 fontSize: 12,
@@ -109,7 +109,7 @@ class WeekView extends StatelessWidget {
                     ),
                   ),
                   if (dayEvents.isEmpty)
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.all(16),
                       child: Text(
                         'No events',
@@ -117,8 +117,8 @@ class WeekView extends StatelessWidget {
                       ),
                     )
                   else
-                    ...dayEvents.map((event) => EventCard(event: event)).toList(),
-                  Divider(height: 1),
+                    ...dayEvents.map((event) => EventCard(event: event)),
+                  const Divider(height: 1),
                 ],
               );
             },

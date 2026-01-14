@@ -10,7 +10,7 @@ import 'event_detail_screen.dart';
 
 /// Main calendar screen with day, week, and month views
 class CalendarScreen extends StatefulWidget {
-  const CalendarScreen({Key? key}) : super(key: key);
+  const CalendarScreen({super.key});
 
   @override
   State<CalendarScreen> createState() => _CalendarScreenState();
@@ -64,12 +64,12 @@ class _CalendarScreenState extends State<CalendarScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Family Calendar', style: TextStyle(fontSize: 22)),
+        title: const Text('Family Calendar', style: TextStyle(fontSize: 22)),
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: Colors.white,
-          labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          tabs: [
+          labelStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          tabs: const [
             Tab(text: 'Day'),
             Tab(text: 'Week'),
             Tab(text: 'Month'),
@@ -77,12 +77,12 @@ class _CalendarScreenState extends State<CalendarScreen>
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.today),
+            icon: const Icon(Icons.today),
             tooltip: 'Today',
             onPressed: _selectToday,
           ),
           IconButton(
-            icon: Icon(Icons.calendar_month),
+            icon: const Icon(Icons.calendar_month),
             tooltip: 'Pick Date',
             onPressed: _pickDate,
           ),
@@ -91,31 +91,31 @@ class _CalendarScreenState extends State<CalendarScreen>
       body: Consumer<EventProvider>(
         builder: (context, eventProvider, child) {
           if (eventProvider.isLoading && eventProvider.events.isEmpty) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           return Column(
             children: [
               // Navigation controls
               Container(
-                padding: EdgeInsets.symmetric(vertical: 8),
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 color: Colors.grey[100],
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     IconButton(
-                      icon: Icon(Icons.chevron_left, size: 32),
+                      icon: const Icon(Icons.chevron_left, size: 32),
                       onPressed: () => _changeDate(_getNavigationDays() * -1),
                     ),
                     TextButton(
                       onPressed: _selectToday,
-                      child: Text(
+                      child: const Text(
                         'Today',
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                     ),
                     IconButton(
-                      icon: Icon(Icons.chevron_right, size: 32),
+                      icon: const Icon(Icons.chevron_right, size: 32),
                       onPressed: () => _changeDate(_getNavigationDays()),
                     ),
                   ],
@@ -167,7 +167,7 @@ class _CalendarScreenState extends State<CalendarScreen>
               .first;
           if (members.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('No family members found. Please set up family members first.')),
+              const SnackBar(content: Text('No family members found. Please set up family members first.')),
             );
             return;
           }
@@ -180,8 +180,8 @@ class _CalendarScreenState extends State<CalendarScreen>
             ),
           );
         },
-        icon: Icon(Icons.add),
-        label: Text('New Event', style: TextStyle(fontSize: 16)),
+        icon: const Icon(Icons.add),
+        label: const Text('New Event', style: TextStyle(fontSize: 16)),
       ),
     );
   }

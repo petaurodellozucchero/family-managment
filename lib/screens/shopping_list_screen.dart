@@ -7,7 +7,7 @@ import '../widgets/shopping_item_tile.dart';
 
 /// Shopping list screen
 class ShoppingListScreen extends StatefulWidget {
-  const ShoppingListScreen({Key? key}) : super(key: key);
+  const ShoppingListScreen({super.key});
 
   @override
   State<ShoppingListScreen> createState() => _ShoppingListScreenState();
@@ -26,7 +26,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
   Future<void> _addItem(BuildContext context) async {
     if (_itemController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter an item name')),
+        const SnackBar(content: Text('Please enter an item name')),
       );
       return;
     }
@@ -46,11 +46,11 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
     if (success) {
       _itemController.clear();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Item added successfully')),
+        const SnackBar(content: Text('Item added successfully')),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to add item')),
+        const SnackBar(content: Text('Failed to add item')),
       );
     }
   }
@@ -60,7 +60,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
     
     if (provider.purchasedItems.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('No purchased items to clear')),
+        const SnackBar(content: Text('No purchased items to clear')),
       );
       return;
     }
@@ -69,18 +69,18 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Clear Purchased Items'),
+          title: const Text('Clear Purchased Items'),
           content: Text(
             'Are you sure you want to remove all ${provider.purchasedItems.length} purchased items?',
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context, true),
-              child: Text('Clear', style: TextStyle(color: Colors.red)),
+              child: const Text('Clear', style: TextStyle(color: Colors.red)),
             ),
           ],
         );
@@ -92,11 +92,11 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
       
       if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Purchased items cleared')),
+          const SnackBar(content: Text('Purchased items cleared')),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to clear items')),
+          const SnackBar(content: Text('Failed to clear items')),
         );
       }
     }
@@ -106,18 +106,18 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Shopping List', style: TextStyle(fontSize: 22)),
+        title: const Text('Shopping List', style: TextStyle(fontSize: 22)),
         actions: [
           Consumer<ShoppingProvider>(
             builder: (context, provider, child) {
               if (provider.purchasedItems.isNotEmpty) {
                 return IconButton(
-                  icon: Icon(Icons.clear_all),
+                  icon: const Icon(Icons.clear_all),
                   tooltip: 'Clear Purchased',
                   onPressed: () => _clearPurchasedItems(context),
                 );
               }
-              return SizedBox.shrink();
+              return const SizedBox.shrink();
             },
           ),
         ],
@@ -126,7 +126,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
         children: [
           // Add item input
           Container(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             color: Colors.grey[100],
             child: Row(
               children: [
@@ -141,17 +141,17 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                       filled: true,
                       fillColor: Colors.white,
                       contentPadding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     ),
-                    style: TextStyle(fontSize: 18),
+                    style: const TextStyle(fontSize: 18),
                     onSubmitted: (_) => _addItem(context),
                   ),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 FloatingActionButton(
                   onPressed: () => _addItem(context),
-                  child: Icon(Icons.add),
                   mini: true,
+                  child: Icon(Icons.add),
                 ),
               ],
             ),
@@ -161,11 +161,11 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
             child: Consumer<ShoppingProvider>(
               builder: (context, provider, child) {
                 if (provider.isLoading && provider.items.isEmpty) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (provider.items.isEmpty) {
-                  return Center(
+                  return const Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -188,12 +188,12 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                 return RefreshIndicator(
                   onRefresh: () async {
                     // Refresh is handled by the stream
-                    await Future.delayed(Duration(milliseconds: 500));
+                    await Future.delayed(const Duration(milliseconds: 500));
                   },
                   child: ListView.separated(
-                    padding: EdgeInsets.symmetric(vertical: 8),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                     itemCount: provider.items.length,
-                    separatorBuilder: (context, index) => SizedBox(height: 4),
+                    separatorBuilder: (context, index) => const SizedBox(height: 4),
                     itemBuilder: (context, index) {
                       final item = provider.items[index];
                       return ShoppingItemTile(
@@ -205,7 +205,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                           bool success = await provider.deleteItem(item.id);
                           if (success) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Item deleted')),
+                              const SnackBar(content: Text('Item deleted')),
                             );
                           }
                         },

@@ -8,19 +8,19 @@ class ShoppingItemTile extends StatelessWidget {
   final VoidCallback onDelete;
 
   const ShoppingItemTile({
-    Key? key,
+    super.key,
     required this.item,
     required this.onToggle,
     required this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
       elevation: item.isPurchased ? 0 : 2,
       child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         leading: Checkbox(
           value: item.isPurchased,
           onChanged: onToggle,
@@ -38,7 +38,7 @@ class ShoppingItemTile extends StatelessWidget {
           ),
         ),
         trailing: IconButton(
-          icon: Icon(Icons.delete, color: Colors.red),
+          icon: const Icon(Icons.delete, color: Colors.red),
           onPressed: () {
             _showDeleteConfirmation(context);
           },
@@ -52,19 +52,19 @@ class ShoppingItemTile extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete Item'),
+          title: const Text('Delete Item'),
           content: Text('Are you sure you want to delete "${item.name}"?'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
                 onDelete();
               },
-              child: Text('Delete', style: TextStyle(color: Colors.red)),
+              child: const Text('Delete', style: TextStyle(color: Colors.red)),
             ),
           ],
         );

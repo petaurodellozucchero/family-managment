@@ -42,7 +42,7 @@ class EventProvider with ChangeNotifier {
     
     while (current.isBefore(end) || current.isAtSameMomentAs(end)) {
       rangeEvents.addAll(getEventsForDate(current));
-      current = current.add(Duration(days: 1));
+      current = current.add(const Duration(days: 1));
     }
     
     // Remove duplicates

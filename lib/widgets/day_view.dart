@@ -9,10 +9,10 @@ class DayView extends StatelessWidget {
   final List<Event> events;
 
   const DayView({
-    Key? key,
+    super.key,
     required this.selectedDate,
     required this.events,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +24,16 @@ class DayView extends StatelessWidget {
       children: [
         // Date header
         Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           color: Theme.of(context).primaryColor.withOpacity(0.1),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.calendar_today, size: 20),
-              SizedBox(width: 8),
+              const Icon(Icons.calendar_today, size: 20),
+              const SizedBox(width: 8),
               Text(
                 DateFormat('EEEE, MMMM d, y').format(selectedDate),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -44,7 +44,7 @@ class DayView extends StatelessWidget {
         // Events list
         Expanded(
           child: sortedEvents.isEmpty
-              ? Center(
+              ? const Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -58,7 +58,7 @@ class DayView extends StatelessWidget {
                   ),
                 )
               : ListView.builder(
-                  padding: EdgeInsets.symmetric(vertical: 8),
+                  padding: const EdgeInsets.symmetric(vertical: 8),
                   itemCount: sortedEvents.length,
                   itemBuilder: (context, index) {
                     return EventCard(event: sortedEvents[index]);

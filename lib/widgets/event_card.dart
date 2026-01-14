@@ -6,12 +6,12 @@ import '../screens/event_detail_screen.dart';
 class EventCard extends StatelessWidget {
   final Event event;
 
-  const EventCard({Key? key, required this.event}) : super(key: key);
+  const EventCard({super.key, required this.event});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
       color: _hexToColor(event.color).withOpacity(0.2),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
@@ -28,7 +28,7 @@ class EventCard extends StatelessWidget {
         },
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: EdgeInsets.all(12),
+          padding: const EdgeInsets.all(12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -42,14 +42,14 @@ class EventCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           event.title,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.black87,
@@ -57,10 +57,10 @@ class EventCard extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
                           _formatTime(event.startTime, event.endTime),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                             color: Colors.black54,
                           ),
@@ -77,15 +77,15 @@ class EventCard extends StatelessWidget {
                 ],
               ),
               if (event.location.isNotEmpty) ...[
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Row(
                   children: [
-                    Icon(Icons.location_on, size: 16, color: Colors.black54),
-                    SizedBox(width: 4),
+                    const Icon(Icons.location_on, size: 16, color: Colors.black54),
+                    const SizedBox(width: 4),
                     Expanded(
                       child: Text(
                         event.location,
-                        style: TextStyle(fontSize: 14, color: Colors.black54),
+                        style: const TextStyle(fontSize: 14, color: Colors.black54),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
