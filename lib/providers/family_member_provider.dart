@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import '../models/family_member_model.dart';
 import '../services/firebase_service.dart';
@@ -8,6 +9,7 @@ class FamilyMemberProvider with ChangeNotifier {
   List<FamilyMember> _familyMembers = [];
   bool _isLoading = false;
   String? _error;
+  StreamSubscription<List<FamilyMember>>? _streamSubscription;
 
   List<FamilyMember> get familyMembers => _familyMembers;
   bool get isLoading => _isLoading;
@@ -22,7 +24,7 @@ class FamilyMemberProvider with ChangeNotifier {
     await _firebaseService.initializeDefaultFamilyMembers();
 
     // Then listen to the stream
-    _firebaseService.getFamilyMembersStream().listen(
+    _streamSubscription = _firebaseService.getFamilyMembersStream().listen(
       (members) {
         _familyMembers = members;
         _isLoading = false;
@@ -39,15 +41,30 @@ class FamilyMemberProvider with ChangeNotifier {
 
   /// Add a new family member
   Future<bool> addFamilyMember(FamilyMember member) async {
+    return _performOperation(() => _firebaseService.addFamilyMember(member));
+  }
+
+  /// Update an existing family member
+  Future<bool> updateFamilyMember(String memberId, FamilyMember member) async {
+    return _performOperation(() => _firebaseService.updateFamilyMember(memberId, member));
+  }
+
+  /// Delete a family member
+  Future<bool> deleteFamilyMember(String memberId) async {
+    return _performOperation(() => _firebaseService.deleteFamilyMember(memberId));
+  }
+
+  /// Helper method to handle operation state and error handling
+  Future<bool> _performOperation(Future<dynamic> Function() operation) async {
     _isLoading = true;
     _error = null;
     notifyListeners();
 
-    String? memberId = await _firebaseService.addFamilyMember(member);
+    final result = await operation();
 
     _isLoading = false;
-    if (memberId == null) {
-      _error = 'Failed to add family member';
+    if (result == null || result == false) {
+      _error = 'Operation failed';
       notifyListeners();
       return false;
     }
@@ -56,43 +73,15 @@ class FamilyMemberProvider with ChangeNotifier {
     return true;
   }
 
-  /// Update an existing family member
-  Future<bool> updateFamilyMember(String memberId, FamilyMember member) async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
-
-    bool success = await _firebaseService.updateFamilyMember(memberId, member);
-
-    _isLoading = false;
-    if (!success) {
-      _error = 'Failed to update family member';
-    }
-
-    notifyListeners();
-    return success;
-  }
-
-  /// Delete a family member
-  Future<bool> deleteFamilyMember(String memberId) async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
-
-    bool success = await _firebaseService.deleteFamilyMember(memberId);
-
-    _isLoading = false;
-    if (!success) {
-      _error = 'Failed to delete family member';
-    }
-
-    notifyListeners();
-    return success;
-  }
-
   /// Clear any error messages
   void clearError() {
     _error = null;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _streamSubscription?.cancel();
+    super.dispose();
   }
 }
