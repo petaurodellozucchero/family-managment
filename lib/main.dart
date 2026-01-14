@@ -6,6 +6,7 @@ import 'screens/shopping_list_screen.dart';
 import 'screens/settings_screen.dart';
 import 'providers/event_provider.dart';
 import 'providers/shopping_provider.dart';
+import 'providers/family_member_provider.dart';
 import 'services/auth_service.dart';
 import 'services/firebase_service.dart';
 import 'firebase_options.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => FamilyMemberProvider()..initialize()),
         ChangeNotifierProvider(create: (_) => EventProvider()..initialize()),
         ChangeNotifierProvider(create: (_) => ShoppingProvider()..initialize()),
       ],
@@ -84,7 +86,6 @@ class AuthWrapper extends StatefulWidget {
 
 class _AuthWrapperState extends State<AuthWrapper> {
   final AuthService _authService = AuthService();
-  final FirebaseService _firebaseService = FirebaseService();
   bool _isInitializing = true;
 
   @override
@@ -99,9 +100,6 @@ class _AuthWrapperState extends State<AuthWrapper> {
       if (_authService.currentUser == null) {
         await _authService.signInAnonymously();
       }
-      
-      // Initialize default family members if needed
-      await _firebaseService.initializeDefaultFamilyMembers();
       
       setState(() {
         _isInitializing = false;

@@ -170,6 +170,28 @@ class FirebaseService {
     }
   }
 
+  /// Update an existing family member
+  Future<bool> updateFamilyMember(String memberId, FamilyMember member) async {
+    try {
+      await familyMembersCollection.doc(memberId).update(member.toFirestore());
+      return true;
+    } catch (e) {
+      print('Error updating family member: $e');
+      return false;
+    }
+  }
+
+  /// Delete a family member
+  Future<bool> deleteFamilyMember(String memberId) async {
+    try {
+      await familyMembersCollection.doc(memberId).delete();
+      return true;
+    } catch (e) {
+      print('Error deleting family member: $e');
+      return false;
+    }
+  }
+
   /// Initialize default family members if none exist
   Future<void> initializeDefaultFamilyMembers() async {
     try {
