@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/family_member_model.dart';
 import '../models/shopping_item_model.dart';
 import '../providers/family_member_provider.dart';
 import '../utils/color_utils.dart';
@@ -22,13 +23,16 @@ class ShoppingItemTile extends StatelessWidget {
     return Consumer<FamilyMemberProvider>(
       builder: (context, familyMemberProvider, child) {
         // Find the family member who added this item
-        final addedByMember = familyMemberProvider.familyMembers
-            .where((m) => m.id == item.addedBy)
-            .toList();
-        final memberName =
-            addedByMember.isNotEmpty ? addedByMember.first.name : null;
-        final memberColor = addedByMember.isNotEmpty
-            ? ColorUtils.hexToColor(addedByMember.first.color)
+        FamilyMember? addedByMember;
+        try {
+          addedByMember = familyMemberProvider.familyMembers
+              .firstWhere((m) => m.id == item.addedBy);
+        } catch (_) {
+          addedByMember = null;
+        }
+        final memberName = addedByMember?.name;
+        final memberColor = addedByMember != null
+            ? ColorUtils.hexToColor(addedByMember.color)
             : Colors.grey;
 
         return Card(
