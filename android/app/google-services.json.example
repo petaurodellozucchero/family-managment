@@ -1,0 +1,16 @@
+# Firebase Configuration Required
+
+This file is a placeholder. You need to download your actual `google-services.json` file from the Firebase Console.
+
+## Instructions:
+
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Select your project
+3. Click on the Android icon or "Add app"
+4. Register your app with package name: `com.example.family_managment`
+5. Download the `google-services.json` file
+6. Replace this file with the downloaded `google-services.json`
+
+For detailed instructions, see [FIREBASE_SETUP.md](../../FIREBASE_SETUP.md) in the project root.
+
+**IMPORTANT**: This file should never be committed to version control. It's listed in `.gitignore` for security.
