@@ -28,7 +28,7 @@ class ColorUtils {
       const Color(0xFF00BCD4), // Cyan
       const Color(0xFF795548), // Brown
       const Color(0xFF607D8B), // Blue Grey
-      const Color(0xFFFFEB38), // Lime
+      const Color(0xFFCDDC39), // Lime
       const Color(0xFFFF5722), // Deep Orange
     ];
   }
