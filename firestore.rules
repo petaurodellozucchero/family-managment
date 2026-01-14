@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    // Events collection
+    // - All authenticated users can read events
+    // - Any authenticated user can create events
+    // - Only the creator can update or delete their events
+    match /events/{eventId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update, delete: if isSignedIn() && isOwner(resource.data.createdBy);
+    }
+    
+    // Shopping list collection
+    // - All authenticated users can read and write
+    match /shoppingList/{itemId} {
+      allow read, write: if isSignedIn();
+    }
+    
+    // Family members collection
+    // - All authenticated users can read
+    // - All authenticated users can write (for family management)
+    match /familyMembers/{memberId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+  }
+}
