@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import '../models/event_model.dart';
 import '../models/family_member_model.dart';
 import '../providers/event_provider.dart';
-import '../services/firebase_service.dart';
+import '../providers/family_member_provider.dart';
 import '../services/auth_service.dart';
 
 /// Screen for viewing and editing event details
@@ -36,17 +36,14 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
   String? _selectedMemberId;
   String _selectedRecurrence = 'none';
   
-  final FirebaseService _firebaseService = FirebaseService();
   final AuthService _authService = AuthService();
   
   List<FamilyMember> _familyMembers = [];
-  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _initializeForm();
-    _loadFamilyMembers();
   }
 
   void _initializeForm() {
@@ -68,27 +65,6 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
       _startTime = const TimeOfDay(hour: 9, minute: 0);
       _endDate = initial;
       _endTime = const TimeOfDay(hour: 10, minute: 0);
-    }
-  }
-
-  Future<void> _loadFamilyMembers() async {
-    try {
-      List<FamilyMember> members =
-          await _firebaseService.getFamilyMembersStream().first;
-      setState(() {
-        _familyMembers = members;
-        if (_selectedMemberId == null && members.isNotEmpty) {
-          _selectedMemberId = members.first.id;
-        }
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Error loading family members')),
-      );
     }
   }
 
@@ -280,24 +256,33 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.event != null ? 'Edit Event' : 'New Event',
-          style: const TextStyle(fontSize: 22),
-        ),
-        actions: [
-          if (widget.event != null)
-            IconButton(
-              icon: const Icon(Icons.delete),
-              tooltip: 'Delete Event',
-              onPressed: _deleteEvent,
+    return Consumer<FamilyMemberProvider>(
+      builder: (context, familyMemberProvider, child) {
+        _familyMembers = familyMemberProvider.familyMembers;
+        
+        // Set default selected member if not set
+        if (_selectedMemberId == null && _familyMembers.isNotEmpty) {
+          _selectedMemberId = _familyMembers.first.id;
+        }
+
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              widget.event != null ? 'Edit Event' : 'New Event',
+              style: const TextStyle(fontSize: 22),
             ),
-        ],
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
+            actions: [
+              if (widget.event != null)
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  tooltip: 'Delete Event',
+                  onPressed: _deleteEvent,
+                ),
+            ],
+          ),
+          body: familyMemberProvider.isLoading && _familyMembers.isEmpty
+              ? const Center(child: CircularProgressIndicator())
+              : SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Form(
                 key: _formKey,
@@ -501,6 +486,8 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                 ),
               ),
             ),
+        );
+      },
     );
   }
 

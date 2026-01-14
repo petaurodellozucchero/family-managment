@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/event_provider.dart';
-import '../models/family_member_model.dart';
-import '../services/firebase_service.dart';
+import '../providers/family_member_provider.dart';
 import '../widgets/day_view.dart';
 import '../widgets/week_view.dart';
 import '../widgets/month_view.dart';
@@ -20,7 +19,6 @@ class _CalendarScreenState extends State<CalendarScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   DateTime _selectedDate = DateTime.now();
-  final FirebaseService _firebaseService = FirebaseService();
 
   @override
   void initState() {
@@ -161,11 +159,9 @@ class _CalendarScreenState extends State<CalendarScreen>
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          List<FamilyMember> members = await _firebaseService
-              .getFamilyMembersStream()
-              .first;
-          if (members.isEmpty) {
+        onPressed: () {
+          final familyMemberProvider = Provider.of<FamilyMemberProvider>(context, listen: false);
+          if (familyMemberProvider.familyMembers.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('No family members found. Please set up family members first.')),
             );
