@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../providers/family_member_provider.dart';
 import '../providers/current_user_provider.dart';
 import '../models/family_member_model.dart';
+import '../utils/color_utils.dart';
 
 /// Login screen for selecting user identity
 class LoginScreen extends StatefulWidget {
@@ -134,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
-                      children: _getColorOptions().map((color) {
+                      children: ColorUtils.getColorOptions().map((color) {
                         return InkWell(
                           onTap: () {
                             setState(() {
@@ -178,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     FamilyMember newMember = FamilyMember(
                       id: '',
                       name: nameController.text.trim(),
-                      color: _colorToHex(selectedColor),
+                      color: ColorUtils.colorToHex(selectedColor),
                     );
 
                     final familyProvider = Provider.of<FamilyMemberProvider>(
@@ -189,16 +190,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     if (success) {
                       Navigator.pop(dialogContext);
-                      // Wait for the family members list to update
-                      await Future.delayed(const Duration(milliseconds: 500));
+                      
+                      // Wait for the family members list to update (poll until loaded, max 3 seconds)
+                      final memberName = nameController.text.trim();
+                      final memberColorHex = ColorUtils.colorToHex(selectedColor);
+                      int waitCount = 0;
+                      while (familyProvider.isLoading && waitCount < 30) {
+                        await Future.delayed(const Duration(milliseconds: 100));
+                        waitCount++;
+                      }
 
                       // Find the newly created member and select it
                       if (context.mounted) {
                         final members = familyProvider.familyMembers;
                         final createdMember = members.firstWhere(
                           (m) =>
-                              m.name == nameController.text.trim() &&
-                              m.color == _colorToHex(selectedColor),
+                              m.name == memberName &&
+                              m.color == memberColorHex,
                           orElse: () => members.last,
                         );
                         _selectMember(context, createdMember);
@@ -229,27 +237,6 @@ class _LoginScreenState extends State<LoginScreen> {
       },
     );
   }
-
-  List<Color> _getColorOptions() {
-    return [
-      const Color(0xFFFFEB3B), // Yellow
-      const Color(0xFFE91E63), // Pink
-      const Color(0xFFF44336), // Red
-      const Color(0xFF2196F3), // Blue
-      const Color(0xFF4CAF50), // Green
-      const Color(0xFF9C27B0), // Purple
-      const Color(0xFFFF9800), // Orange
-      const Color(0xFF00BCD4), // Cyan
-      const Color(0xFF795548), // Brown
-      const Color(0xFF607D8B), // Blue Grey
-      const Color(0xFFFFEB38), // Lime
-      const Color(0xFFFF5722), // Deep Orange
-    ];
-  }
-
-  String _colorToHex(Color color) {
-    return '#${color.value.toRadixString(16).substring(2).toUpperCase()}';
-  }
 }
 
 /// Card widget for displaying a family member option
@@ -277,7 +264,7 @@ class _FamilyMemberCard extends StatelessWidget {
                 width: 56,
                 height: 56,
                 decoration: BoxDecoration(
-                  color: _hexToColor(member.color),
+                  color: ColorUtils.hexToColor(member.color),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -305,12 +292,5 @@ class _FamilyMemberCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Color _hexToColor(String hexString) {
-    final buffer = StringBuffer();
-    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
-    buffer.write(hexString.replaceFirst('#', ''));
-    return Color(int.parse(buffer.toString(), radix: 16));
   }
 }

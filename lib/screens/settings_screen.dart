@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../providers/family_member_provider.dart';
 import '../providers/current_user_provider.dart';
 import '../models/family_member_model.dart';
+import '../utils/color_utils.dart';
 
 /// Settings screen for managing family members
 class SettingsScreen extends StatefulWidget {
@@ -47,7 +48,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           width: 48,
                           height: 48,
                           decoration: BoxDecoration(
-                            color: _hexToColor(currentUser.color),
+                            color: ColorUtils.hexToColor(currentUser.color),
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(Icons.person, color: Colors.white),
@@ -118,7 +119,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           width: 40,
                           height: 40,
                           decoration: BoxDecoration(
-                            color: _hexToColor(member.color),
+                            color: ColorUtils.hexToColor(member.color),
                             shape: BoxShape.circle,
                           ),
                         ),
@@ -235,7 +236,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
-                    children: _getColorOptions().map((color) {
+                    children: ColorUtils.getColorOptions().map((color) {
                       return InkWell(
                         onTap: () {
                           setState(() {
@@ -278,7 +279,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     FamilyMember newMember = FamilyMember(
                       id: '',
                       name: nameController.text.trim(),
-                      color: _colorToHex(selectedColor),
+                      color: ColorUtils.colorToHex(selectedColor),
                     );
 
                     final provider = Provider.of<FamilyMemberProvider>(
@@ -312,7 +313,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void _showEditMemberDialog(BuildContext context, FamilyMember member) {
     final TextEditingController nameController =
         TextEditingController(text: member.name);
-    Color selectedColor = _hexToColor(member.color);
+    Color selectedColor = ColorUtils.hexToColor(member.color);
 
     showDialog(
       context: context,
@@ -338,7 +339,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
-                    children: _getColorOptions().map((color) {
+                    children: ColorUtils.getColorOptions().map((color) {
                       return InkWell(
                         onTap: () {
                           setState(() {
@@ -380,7 +381,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                     FamilyMember updatedMember = member.copyWith(
                       name: nameController.text.trim(),
-                      color: _colorToHex(selectedColor),
+                      color: ColorUtils.colorToHex(selectedColor),
                     );
 
                     final provider = Provider.of<FamilyMemberProvider>(
@@ -463,33 +464,5 @@ class _SettingsScreenState extends State<SettingsScreen> {
         );
       },
     );
-  }
-
-  List<Color> _getColorOptions() {
-    return [
-      const Color(0xFFFFEB3B), // Yellow
-      const Color(0xFFE91E63), // Pink
-      const Color(0xFFF44336), // Red
-      const Color(0xFF2196F3), // Blue
-      const Color(0xFF4CAF50), // Green
-      const Color(0xFF9C27B0), // Purple
-      const Color(0xFFFF9800), // Orange
-      const Color(0xFF00BCD4), // Cyan
-      const Color(0xFF795548), // Brown
-      const Color(0xFF607D8B), // Blue Grey
-      const Color(0xFFFFEB38), // Lime
-      const Color(0xFFFF5722), // Deep Orange
-    ];
-  }
-
-  Color _hexToColor(String hexString) {
-    final buffer = StringBuffer();
-    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
-    buffer.write(hexString.replaceFirst('#', ''));
-    return Color(int.parse(buffer.toString(), radix: 16));
-  }
-
-  String _colorToHex(Color color) {
-    return '#${color.value.toRadixString(16).substring(2).toUpperCase()}';
   }
 }
