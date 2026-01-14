@@ -191,14 +191,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (success) {
                       Navigator.pop(dialogContext);
                       
-                      // Wait for the family members list to update (poll until loaded, max 3 seconds)
+                      // Wait for the family members list to update
                       final memberName = nameController.text.trim();
                       final memberColorHex = ColorUtils.colorToHex(selectedColor);
-                      int waitCount = 0;
-                      while (familyProvider.isLoading && waitCount < 30) {
-                        await Future.delayed(const Duration(milliseconds: 100));
-                        waitCount++;
-                      }
+                      await familyProvider.waitForLoading();
 
                       // Find the newly created member and select it
                       if (context.mounted) {
