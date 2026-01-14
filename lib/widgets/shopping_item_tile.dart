@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/shopping_item_model.dart';
 import '../providers/family_member_provider.dart';
+import '../utils/color_utils.dart';
 
 /// Widget for displaying a shopping list item
 class ShoppingItemTile extends StatelessWidget {
@@ -27,7 +28,7 @@ class ShoppingItemTile extends StatelessWidget {
         final memberName =
             addedByMember.isNotEmpty ? addedByMember.first.name : null;
         final memberColor = addedByMember.isNotEmpty
-            ? _hexToColor(addedByMember.first.color)
+            ? ColorUtils.hexToColor(addedByMember.first.color)
             : Colors.grey;
 
         return Card(
@@ -84,13 +85,6 @@ class ShoppingItemTile extends StatelessWidget {
         );
       },
     );
-  }
-
-  Color _hexToColor(String hexString) {
-    final buffer = StringBuffer();
-    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
-    buffer.write(hexString.replaceFirst('#', ''));
-    return Color(int.parse(buffer.toString(), radix: 16));
   }
 
   void _showDeleteConfirmation(BuildContext context) {

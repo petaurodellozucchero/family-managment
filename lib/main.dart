@@ -113,8 +113,12 @@ class _AuthWrapperState extends State<AuthWrapper> {
         final savedUserId = await currentUserProvider.loadSavedUserId();
 
         if (savedUserId != null) {
-          // Wait for family members to load
-          await Future.delayed(const Duration(milliseconds: 500));
+          // Wait for family members to finish loading (max 3 seconds)
+          int waitCount = 0;
+          while (familyMemberProvider.isLoading && waitCount < 30) {
+            await Future.delayed(const Duration(milliseconds: 100));
+            waitCount++;
+          }
 
           // Try to find the saved user in the family members list
           final members = familyMemberProvider.familyMembers;
