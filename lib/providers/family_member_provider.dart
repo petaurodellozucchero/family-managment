@@ -15,6 +15,23 @@ class FamilyMemberProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
 
+  /// Maximum time to wait for loading in milliseconds
+  static const int _maxWaitTimeMs = 3000;
+  /// Polling interval in milliseconds
+  static const int _pollingIntervalMs = 100;
+
+  /// Wait for loading to complete (useful for async operations that depend on members)
+  /// Returns true if loading completed, false if timed out
+  Future<bool> waitForLoading() async {
+    final maxIterations = _maxWaitTimeMs ~/ _pollingIntervalMs;
+    int waitCount = 0;
+    while (_isLoading && waitCount < maxIterations) {
+      await Future.delayed(const Duration(milliseconds: _pollingIntervalMs));
+      waitCount++;
+    }
+    return !_isLoading;
+  }
+
   /// Initialize the provider and listen to family members stream
   Future<void> initialize() async {
     _isLoading = true;
