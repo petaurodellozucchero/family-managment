@@ -4,11 +4,12 @@ import 'package:provider/provider.dart';
 import 'screens/calendar_screen.dart';
 import 'screens/shopping_list_screen.dart';
 import 'screens/settings_screen.dart';
+import 'screens/login_screen.dart';
 import 'providers/event_provider.dart';
 import 'providers/shopping_provider.dart';
 import 'providers/family_member_provider.dart';
+import 'providers/current_user_provider.dart';
 import 'services/auth_service.dart';
-import 'services/firebase_service.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => FamilyMemberProvider()..initialize()),
         ChangeNotifierProvider(create: (_) => EventProvider()..initialize()),
         ChangeNotifierProvider(create: (_) => ShoppingProvider()..initialize()),
+        ChangeNotifierProvider(create: (_) => CurrentUserProvider()),
       ],
       child: MaterialApp(
         title: 'Family Management',
@@ -76,7 +78,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/// Wrapper to handle authentication
+/// Wrapper to handle authentication and user identity selection
 class AuthWrapper extends StatefulWidget {
   const AuthWrapper({super.key});
 
@@ -99,6 +101,33 @@ class _AuthWrapperState extends State<AuthWrapper> {
       // Sign in anonymously if not already signed in
       if (_authService.currentUser == null) {
         await _authService.signInAnonymously();
+      }
+      
+      // Check for saved user identity
+      if (mounted) {
+        final currentUserProvider =
+            Provider.of<CurrentUserProvider>(context, listen: false);
+        final familyMemberProvider =
+            Provider.of<FamilyMemberProvider>(context, listen: false);
+
+        final savedUserId = await currentUserProvider.loadSavedUserId();
+
+        if (savedUserId != null) {
+          // Wait for family members to load
+          await Future.delayed(const Duration(milliseconds: 500));
+
+          // Try to find the saved user in the family members list
+          final members = familyMemberProvider.familyMembers;
+          final savedMember = members.where((m) => m.id == savedUserId).toList();
+
+          if (savedMember.isNotEmpty) {
+            currentUserProvider.initializeWithMember(savedMember.first);
+          } else {
+            currentUserProvider.markInitialized();
+          }
+        } else {
+          currentUserProvider.markInitialized();
+        }
       }
       
       setState(() {
@@ -132,7 +161,22 @@ class _AuthWrapperState extends State<AuthWrapper> {
       );
     }
 
-    return const MainScreen();
+    // Watch current user provider to react to login/logout
+    return Consumer<CurrentUserProvider>(
+      builder: (context, currentUserProvider, child) {
+        if (!currentUserProvider.isInitialized) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        if (!currentUserProvider.hasUser) {
+          return const LoginScreen();
+        }
+
+        return const MainScreen();
+      },
+    );
   }
 }
 

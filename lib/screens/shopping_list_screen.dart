@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/shopping_provider.dart';
+import '../providers/current_user_provider.dart';
 import '../models/shopping_item_model.dart';
-import '../services/auth_service.dart';
 import '../widgets/shopping_item_tile.dart';
 
 /// Shopping list screen
@@ -15,7 +15,6 @@ class ShoppingListScreen extends StatefulWidget {
 
 class _ShoppingListScreenState extends State<ShoppingListScreen> {
   final TextEditingController _itemController = TextEditingController();
-  final AuthService _authService = AuthService();
 
   @override
   void dispose() {
@@ -32,12 +31,14 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
     }
 
     final provider = Provider.of<ShoppingProvider>(context, listen: false);
+    final currentUserProvider =
+        Provider.of<CurrentUserProvider>(context, listen: false);
     
     ShoppingItem newItem = ShoppingItem(
       id: '',
       name: _itemController.text.trim(),
       isPurchased: false,
-      addedBy: _authService.currentUserId ?? 'anonymous',
+      addedBy: currentUserProvider.currentUser?.id ?? 'anonymous',
       addedAt: DateTime.now(),
     );
 
