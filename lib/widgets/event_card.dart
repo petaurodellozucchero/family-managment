@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../models/event_model.dart';
+import '../models/family_member_model.dart';
+import '../providers/family_member_provider.dart';
 import '../screens/event_detail_screen.dart';
+import '../utils/color_utils.dart';
 
 /// Widget for displaying an event card
 class EventCard extends StatelessWidget {
@@ -10,12 +14,28 @@ class EventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Consumer<FamilyMemberProvider>(
+      builder: (context, familyMemberProvider, child) {
+        // Find the family member assigned to this event
+        FamilyMember? assignedMember;
+        try {
+          assignedMember = familyMemberProvider.familyMembers
+              .firstWhere((m) => m.id == event.assignedTo);
+        } catch (_) {
+          assignedMember = null;
+        }
+        
+        // Use the assigned member's current color, or fallback to event's stored color
+        final eventColor = assignedMember != null
+            ? ColorUtils.hexToColor(assignedMember.color)
+            : ColorUtils.hexToColor(event.color);
+        
+        return Card(
       margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-      color: _hexToColor(event.color).withOpacity(0.2),
+      color: eventColor.withOpacity(0.2),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: _hexToColor(event.color), width: 2),
+        side: BorderSide(color: eventColor, width: 2),
       ),
       child: InkWell(
         onTap: () {
@@ -38,7 +58,7 @@ class EventCard extends StatelessWidget {
                     width: 4,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: _hexToColor(event.color),
+                      color: eventColor,
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -71,7 +91,7 @@ class EventCard extends StatelessWidget {
                   if (event.recurrence != 'none')
                     Icon(
                       Icons.repeat,
-                      color: _hexToColor(event.color),
+                      color: eventColor,
                       size: 20,
                     ),
                 ],
@@ -97,6 +117,8 @@ class EventCard extends StatelessWidget {
           ),
         ),
       ),
+        );
+      },
     );
   }
 
@@ -104,12 +126,5 @@ class EventCard extends StatelessWidget {
     String startStr = '${start.hour.toString().padLeft(2, '0')}:${start.minute.toString().padLeft(2, '0')}';
     String endStr = '${end.hour.toString().padLeft(2, '0')}:${end.minute.toString().padLeft(2, '0')}';
     return '$startStr - $endStr';
-  }
-
-  Color _hexToColor(String hexString) {
-    final buffer = StringBuffer();
-    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
-    buffer.write(hexString.replaceFirst('#', ''));
-    return Color(int.parse(buffer.toString(), radix: 16));
   }
 }
