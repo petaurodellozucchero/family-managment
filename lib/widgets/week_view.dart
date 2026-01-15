@@ -33,7 +33,7 @@ class WeekView extends StatelessWidget {
               const Icon(Icons.calendar_view_week, size: 20),
               const SizedBox(width: 8),
               Text(
-                'Week of ${DateFormat('MMM d').format(weekStart)}',
+                'Settimana del ${DateFormat('d MMM').format(weekStart)}',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -67,7 +67,7 @@ class WeekView extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          DateFormat('EEE').format(day),
+                          DateFormat('EEE', 'it').format(day),
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -78,7 +78,7 @@ class WeekView extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          DateFormat('MMM d').format(day),
+                          DateFormat('d MMM', 'it').format(day),
                           style: TextStyle(
                             fontSize: 16,
                             color: isToday
@@ -96,7 +96,7 @@ class WeekView extends StatelessWidget {
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: const Text(
-                              'Today',
+                              'Oggi',
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.white,
@@ -112,7 +112,7 @@ class WeekView extends StatelessWidget {
                     const Padding(
                       padding: EdgeInsets.all(16),
                       child: Text(
-                        'No events',
+                        'Nessun evento',
                         style: TextStyle(color: Colors.grey, fontSize: 14),
                       ),
                     )

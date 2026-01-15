@@ -18,7 +18,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings', style: TextStyle(fontSize: 22)),
+        title: const Text('Impostazioni', style: TextStyle(fontSize: 22)),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -35,7 +35,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Current User',
+                      'Utente Corrente',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -60,7 +60,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        subtitle: const Text('Tap to switch user'),
+                        subtitle: const Text('Tocca per cambiare utente'),
                         trailing: const Icon(Icons.swap_horiz),
                         onTap: () => _confirmSwitchUser(context),
                       ),
@@ -78,7 +78,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  'Family Members',
+                  'Membri della Famiglia',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -87,7 +87,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ElevatedButton.icon(
                   onPressed: () => _showAddMemberDialog(context),
                   icon: const Icon(Icons.add),
-                  label: const Text('Add'),
+                  label: const Text('Aggiungi'),
                 ),
               ],
             ),
@@ -102,7 +102,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 if (familyMemberProvider.familyMembers.isEmpty) {
                   return const Column(
                     children: [
-                      Text('No family members found. Use the Add button to create new members.'),
+                      Text('Nessun membro della famiglia trovato. Usa il pulsante Aggiungi per creare nuovi membri.'),
                       SizedBox(height: 16),
                     ],
                   );
@@ -156,7 +156,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const Divider(),
             const SizedBox(height: 16),
             const Text(
-              'About',
+              'Info',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -165,14 +165,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const SizedBox(height: 16),
             const ListTile(
               leading: Icon(Icons.info_outline),
-              title: Text('Version', style: TextStyle(fontSize: 18)),
+              title: Text('Versione', style: TextStyle(fontSize: 18)),
               subtitle: Text('1.0.0'),
             ),
             const ListTile(
               leading: Icon(Icons.family_restroom),
-              title: Text('Family Management App',
+              title: Text('App Gestione Familiare',
                   style: TextStyle(fontSize: 18)),
-              subtitle: Text('Manage your family calendar and shopping list'),
+              subtitle: Text('Gestisci il calendario familiare e la lista della spesa'),
             ),
           ],
         ),
@@ -185,13 +185,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: const Text('Switch User'),
+          title: const Text('Cambia Utente'),
           content: const Text(
-              'Are you sure you want to switch to a different user? You will be redirected to the login screen.'),
+              'Sei sicuro di voler cambiare utente? Verrai reindirizzato alla schermata di login.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext),
-              child: const Text('Cancel'),
+              child: const Text('Annulla'),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -200,7 +200,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Provider.of<CurrentUserProvider>(context, listen: false);
                 await currentUserProvider.clearCurrentUser();
               },
-              child: const Text('Switch User'),
+              child: const Text('Cambia Utente'),
             ),
           ],
         );
@@ -218,20 +218,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: const Text('Add Family Member'),
+              title: const Text('Aggiungi Membro Famiglia'),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextField(
                     controller: nameController,
                     decoration: const InputDecoration(
-                      labelText: 'Name',
+                      labelText: 'Nome',
                       border: OutlineInputBorder(),
                     ),
                     autofocus: true,
                   ),
                   const SizedBox(height: 16),
-                  const Text('Select Color:', style: TextStyle(fontSize: 16)),
+                  const Text('Seleziona Colore:', style: TextStyle(fontSize: 16)),
                   const SizedBox(height: 8),
                   Wrap(
                     spacing: 8,
@@ -265,13 +265,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(dialogContext),
-                  child: const Text('Cancel'),
+                  child: const Text('Annulla'),
                 ),
                 ElevatedButton(
                   onPressed: () async {
                     if (nameController.text.trim().isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Please enter a name')),
+                        const SnackBar(content: Text('Inserisci un nome')),
                       );
                       return;
                     }
@@ -291,16 +291,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Navigator.pop(dialogContext);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            content: Text('Family member added successfully')),
+                            content: Text('Membro famiglia aggiunto con successo')),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            content: Text('Failed to add family member')),
+                            content: Text('Impossibile aggiungere membro famiglia')),
                       );
                     }
                   },
-                  child: const Text('Add'),
+                  child: const Text('Aggiungi'),
                 ),
               ],
             );
@@ -321,20 +321,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: const Text('Edit Family Member'),
+              title: const Text('Modifica Membro Famiglia'),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextField(
                     controller: nameController,
                     decoration: const InputDecoration(
-                      labelText: 'Name',
+                      labelText: 'Nome',
                       border: OutlineInputBorder(),
                     ),
                     autofocus: true,
                   ),
                   const SizedBox(height: 16),
-                  const Text('Select Color:', style: TextStyle(fontSize: 16)),
+                  const Text('Seleziona Colore:', style: TextStyle(fontSize: 16)),
                   const SizedBox(height: 8),
                   Wrap(
                     spacing: 8,
@@ -368,13 +368,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(dialogContext),
-                  child: const Text('Cancel'),
+                  child: const Text('Annulla'),
                 ),
                 ElevatedButton(
                   onPressed: () async {
                     if (nameController.text.trim().isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Please enter a name')),
+                        const SnackBar(content: Text('Inserisci un nome')),
                       );
                       return;
                     }
@@ -394,16 +394,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Navigator.pop(dialogContext);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            content: Text('Family member updated successfully')),
+                            content: Text('Membro famiglia aggiornato con successo')),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            content: Text('Failed to update family member')),
+                            content: Text('Impossibile aggiornare membro famiglia')),
                       );
                     }
                   },
-                  child: const Text('Update'),
+                  child: const Text('Aggiorna'),
                 ),
               ],
             );
@@ -421,7 +421,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text(
-                'You cannot delete yourself. Switch to another user first.')),
+                'Non puoi eliminare te stesso. Cambia utente prima.')),
       );
       return;
     }
@@ -430,13 +430,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: const Text('Delete Family Member'),
+          title: const Text('Elimina Membro Famiglia'),
           content: Text(
-              'Are you sure you want to delete ${member.name}? This action cannot be undone.'),
+              'Sei sicuro di voler eliminare ${member.name}? Questa azione non può essere annullata.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext),
-              child: const Text('Cancel'),
+              child: const Text('Annulla'),
             ),
             TextButton(
               onPressed: () async {
@@ -449,16 +449,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 if (success) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                        content: Text('Family member deleted successfully')),
+                        content: Text('Membro famiglia eliminato con successo')),
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                        content: Text('Failed to delete family member')),
+                        content: Text('Impossibile eliminare membro famiglia')),
                   );
                 }
               },
-              child: const Text('Delete', style: TextStyle(color: Colors.red)),
+              child: const Text('Elimina', style: TextStyle(color: Colors.red)),
             ),
           ],
         );

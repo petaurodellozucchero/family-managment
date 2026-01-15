@@ -18,7 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Who are you?', style: TextStyle(fontSize: 22)),
+        title: const Text('Chi sei?', style: TextStyle(fontSize: 22)),
         automaticallyImplyLeading: false,
       ),
       body: Consumer<FamilyMemberProvider>(
@@ -35,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 const SizedBox(height: 16),
                 const Text(
-                  'Select your identity',
+                  'Seleziona la tua identità',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Choose who you are from the family members below',
+                  'Scegli chi sei tra i membri della famiglia',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey[600],
@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Padding(
                       padding: EdgeInsets.all(32),
                       child: Text(
-                        'No family members found.\nCreate a new member to get started.',
+                        'Nessun membro della famiglia trovato.\nCrea un nuovo membro per iniziare.',
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 16, color: Colors.grey),
                       ),
@@ -85,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 OutlinedButton.icon(
                   onPressed: () => _showCreateMemberDialog(context),
                   icon: const Icon(Icons.person_add),
-                  label: const Text('Create New Member'),
+                  label: const Text('Crea Nuovo Membro'),
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.all(16),
                     textStyle: const TextStyle(fontSize: 18),
@@ -115,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: const Text('Create New Member'),
+              title: const Text('Crea Nuovo Membro'),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -123,13 +123,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextField(
                       controller: nameController,
                       decoration: const InputDecoration(
-                        labelText: 'Your Name',
+                        labelText: 'Il Tuo Nome',
                         border: OutlineInputBorder(),
                       ),
                       autofocus: true,
                     ),
                     const SizedBox(height: 16),
-                    const Text('Select Your Color:',
+                    const Text('Seleziona il Tuo Colore:',
                         style: TextStyle(fontSize: 16)),
                     const SizedBox(height: 8),
                     Wrap(
@@ -165,13 +165,13 @@ class _LoginScreenState extends State<LoginScreen> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(dialogContext),
-                  child: const Text('Cancel'),
+                  child: const Text('Annulla'),
                 ),
                 ElevatedButton(
                   onPressed: () async {
                     if (nameController.text.trim().isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Please enter your name')),
+                        const SnackBar(content: Text('Inserisci il tuo nome')),
                       );
                       return;
                     }
@@ -213,7 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           // Fallback: Show error if member not found
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                                content: Text('Profile created. Please select your profile.')),
+                                content: Text('Profilo creato. Seleziona il tuo profilo.')),
                           );
                           return;
                         }
@@ -223,19 +223,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                               content:
-                                  Text('Welcome! Your profile has been created.')),
+                                  Text('Benvenuto! Il tuo profilo è stato creato.')),
                         );
                       }
                     } else {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                              content: Text('Failed to create profile')),
+                              content: Text('Impossibile creare il profilo')),
                         );
                       }
                     }
                   },
-                  child: const Text('Create & Login'),
+                  child: const Text('Crea e Accedi'),
                 ),
               ],
             );

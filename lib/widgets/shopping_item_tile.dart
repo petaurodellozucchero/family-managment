@@ -70,7 +70,7 @@ class ShoppingItemTile extends StatelessWidget {
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        'Added by $memberName',
+                        'Aggiunto da $memberName',
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.grey[600],
@@ -96,19 +96,19 @@ class ShoppingItemTile extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Delete Item'),
-          content: Text('Are you sure you want to delete "${item.name}"?'),
+          title: const Text('Elimina Articolo'),
+          content: Text('Sei sicuro di voler eliminare "${item.name}"?'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
+              child: const Text('Annulla'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
                 onDelete();
               },
-              child: const Text('Delete', style: TextStyle(color: Colors.red)),
+              child: const Text('Elimina', style: TextStyle(color: Colors.red)),
             ),
           ],
         );

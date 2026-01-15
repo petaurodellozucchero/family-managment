@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'screens/calendar_screen.dart';
 import 'screens/shopping_list_screen.dart';
 import 'screens/settings_screen.dart';
@@ -17,6 +19,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await initializeDateFormatting('it', null);
   runApp(const MyApp());
 }
 
@@ -33,8 +36,17 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CurrentUserProvider()),
       ],
       child: MaterialApp(
-        title: 'Family Management',
+        title: 'Gestione Familiare',
         debugShowCheckedModeBanner: false,
+        locale: const Locale('it', 'IT'),
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('it', 'IT'),
+        ],
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(
@@ -216,17 +228,17 @@ class _MainScreenState extends State<MainScreen> {
           NavigationDestination(
             icon: Icon(Icons.calendar_today),
             selectedIcon: Icon(Icons.calendar_today),
-            label: 'Calendar',
+            label: 'Calendario',
           ),
           NavigationDestination(
             icon: Icon(Icons.shopping_cart_outlined),
             selectedIcon: Icon(Icons.shopping_cart),
-            label: 'Shopping',
+            label: 'Spesa',
           ),
           NavigationDestination(
             icon: Icon(Icons.settings_outlined),
             selectedIcon: Icon(Icons.settings),
-            label: 'Settings',
+            label: 'Impostazioni',
           ),
         ],
       ),

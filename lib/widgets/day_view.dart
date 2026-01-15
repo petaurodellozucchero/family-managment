@@ -32,7 +32,7 @@ class DayView extends StatelessWidget {
               const Icon(Icons.calendar_today, size: 20),
               const SizedBox(width: 8),
               Text(
-                DateFormat('EEEE, MMMM d, y').format(selectedDate),
+                DateFormat('EEEE d MMMM y', 'it').format(selectedDate),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -51,7 +51,7 @@ class DayView extends StatelessWidget {
                       Icon(Icons.event_busy, size: 64, color: Colors.grey),
                       SizedBox(height: 16),
                       Text(
-                        'No events for this day',
+                        'Nessun evento per questo giorno',
                         style: TextStyle(fontSize: 18, color: Colors.grey),
                       ),
                     ],

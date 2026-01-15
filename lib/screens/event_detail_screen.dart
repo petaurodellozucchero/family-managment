@@ -139,7 +139,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
 
     if (_selectedMemberId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a family member')),
+        const SnackBar(content: Text('Seleziona un membro della famiglia')),
       );
       return;
     }
@@ -163,7 +163,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
 
     if (endDateTime.isBefore(startDateTime)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('End time must be after start time')),
+        const SnackBar(content: Text('L\'ora di fine deve essere dopo l\'ora di inizio')),
       );
       return;
     }
@@ -202,14 +202,14 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
         SnackBar(
           content: Text(
             widget.event != null
-                ? 'Event updated successfully'
-                : 'Event created successfully',
+                ? 'Evento aggiornato con successo'
+                : 'Evento creato con successo',
           ),
         ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to save event')),
+        const SnackBar(content: Text('Impossibile salvare l\'evento')),
       );
     }
   }
@@ -221,16 +221,16 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Delete Event'),
-          content: const Text('Are you sure you want to delete this event?'),
+          title: const Text('Elimina Evento'),
+          content: const Text('Sei sicuro di voler eliminare questo evento?'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: const Text('Cancel'),
+              child: const Text('Annulla'),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context, true),
-              child: const Text('Delete', style: TextStyle(color: Colors.red)),
+              child: const Text('Elimina', style: TextStyle(color: Colors.red)),
             ),
           ],
         );
@@ -244,11 +244,11 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
       if (success) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Event deleted successfully')),
+          const SnackBar(content: Text('Evento eliminato con successo')),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to delete event')),
+          const SnackBar(content: Text('Impossibile eliminare l\'evento')),
         );
       }
     }
@@ -268,14 +268,14 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              widget.event != null ? 'Edit Event' : 'New Event',
+              widget.event != null ? 'Modifica Evento' : 'Nuovo Evento',
               style: const TextStyle(fontSize: 22),
             ),
             actions: [
               if (widget.event != null)
                 IconButton(
                   icon: const Icon(Icons.delete),
-                  tooltip: 'Delete Event',
+                  tooltip: 'Elimina Evento',
                   onPressed: _deleteEvent,
                 ),
             ],
@@ -293,7 +293,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                     TextFormField(
                       controller: _titleController,
                       decoration: const InputDecoration(
-                        labelText: 'Title',
+                        labelText: 'Titolo',
                         labelStyle: TextStyle(fontSize: 18),
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.title),
@@ -301,7 +301,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                       style: const TextStyle(fontSize: 18),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Please enter a title';
+                          return 'Inserisci un titolo';
                         }
                         return null;
                       },
@@ -312,7 +312,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                     TextFormField(
                       controller: _descriptionController,
                       decoration: const InputDecoration(
-                        labelText: 'Description',
+                        labelText: 'Descrizione',
                         labelStyle: TextStyle(fontSize: 18),
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.description),
@@ -324,7 +324,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                     
                     // Start Date and Time
                     const Text(
-                      'Start',
+                      'Inizio',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -337,7 +337,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                           child: OutlinedButton.icon(
                             icon: const Icon(Icons.calendar_today),
                             label: Text(
-                              DateFormat('MMM d, y').format(_startDate),
+                              DateFormat('d MMM y', 'it').format(_startDate),
                               style: const TextStyle(fontSize: 16),
                             ),
                             onPressed: _selectStartDate,
@@ -360,7 +360,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                     
                     // End Date and Time
                     const Text(
-                      'End',
+                      'Fine',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -373,7 +373,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                           child: OutlinedButton.icon(
                             icon: const Icon(Icons.calendar_today),
                             label: Text(
-                              DateFormat('MMM d, y').format(_endDate),
+                              DateFormat('d MMM y', 'it').format(_endDate),
                               style: const TextStyle(fontSize: 16),
                             ),
                             onPressed: _selectEndDate,
@@ -398,7 +398,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                     DropdownButtonFormField<String>(
                       initialValue: _selectedMemberId,
                       decoration: const InputDecoration(
-                        labelText: 'Assign to',
+                        labelText: 'Assegna a',
                         labelStyle: TextStyle(fontSize: 18),
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.person),
@@ -435,19 +435,19 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                     DropdownButtonFormField<String>(
                       initialValue: _selectedRecurrence,
                       decoration: const InputDecoration(
-                        labelText: 'Recurrence',
+                        labelText: 'Ricorrenza',
                         labelStyle: TextStyle(fontSize: 18),
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.repeat),
                       ),
                       style: const TextStyle(fontSize: 18, color: Colors.black87),
                       items: const [
-                        DropdownMenuItem(value: 'none', child: Text('None')),
-                        DropdownMenuItem(value: 'daily', child: Text('Daily')),
+                        DropdownMenuItem(value: 'none', child: Text('Nessuna')),
+                        DropdownMenuItem(value: 'daily', child: Text('Giornaliera')),
                         DropdownMenuItem(
-                            value: 'weekly', child: Text('Weekly')),
+                            value: 'weekly', child: Text('Settimanale')),
                         DropdownMenuItem(
-                            value: 'monthly', child: Text('Monthly')),
+                            value: 'monthly', child: Text('Mensile')),
                       ],
                       onChanged: (value) {
                         setState(() {
@@ -461,7 +461,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                     TextFormField(
                       controller: _locationController,
                       decoration: const InputDecoration(
-                        labelText: 'Location (optional)',
+                        labelText: 'Luogo (opzionale)',
                         labelStyle: TextStyle(fontSize: 18),
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.location_on),
@@ -477,7 +477,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                       child: ElevatedButton(
                         onPressed: _saveEvent,
                         child: Text(
-                          widget.event != null ? 'Update Event' : 'Create Event',
+                          widget.event != null ? 'Aggiorna Evento' : 'Crea Evento',
                           style: const TextStyle(fontSize: 18),
                         ),
                       ),
