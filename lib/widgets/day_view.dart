@@ -51,7 +51,7 @@ class DayView extends StatelessWidget {
                       Icon(Icons.event_busy, size: 64, color: Colors.grey),
                       SizedBox(height: 16),
                       Text(
-                        'No events for this day',
+                        'Nessun evento per questo giorno',
                         style: TextStyle(fontSize: 18, color: Colors.grey),
                       ),
                     ],

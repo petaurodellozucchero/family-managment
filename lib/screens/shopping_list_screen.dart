@@ -25,7 +25,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
   Future<void> _addItem(BuildContext context) async {
     if (_itemController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter an item name')),
+        const SnackBar(content: Text('Inserisci il nome dell\'articolo')),
       );
       return;
     }
@@ -47,11 +47,11 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
     if (success) {
       _itemController.clear();
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Item added successfully')),
+        const SnackBar(content: Text('Articolo aggiunto con successo')),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to add item')),
+        const SnackBar(content: Text('Impossibile aggiungere l\'articolo')),
       );
     }
   }
@@ -61,7 +61,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
     
     if (provider.purchasedItems.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('No purchased items to clear')),
+        const SnackBar(content: Text('Nessun articolo acquistato da rimuovere')),
       );
       return;
     }
@@ -70,18 +70,18 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Clear Purchased Items'),
+          title: const Text('Cancella Articoli Acquistati'),
           content: Text(
-            'Are you sure you want to remove all ${provider.purchasedItems.length} purchased items?',
+            'Sei sicuro di voler rimuovere tutti i ${provider.purchasedItems.length} articoli acquistati?',
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: const Text('Cancel'),
+              child: const Text('Annulla'),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context, true),
-              child: const Text('Clear', style: TextStyle(color: Colors.red)),
+              child: const Text('Cancella', style: TextStyle(color: Colors.red)),
             ),
           ],
         );
@@ -93,11 +93,11 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
       
       if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Purchased items cleared')),
+          const SnackBar(content: Text('Articoli acquistati cancellati')),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to clear items')),
+          const SnackBar(content: Text('Impossibile cancellare gli articoli')),
         );
       }
     }
@@ -107,14 +107,14 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Shopping List', style: TextStyle(fontSize: 22)),
+        title: const Text('Lista della Spesa', style: TextStyle(fontSize: 22)),
         actions: [
           Consumer<ShoppingProvider>(
             builder: (context, provider, child) {
               if (provider.purchasedItems.isNotEmpty) {
                 return IconButton(
                   icon: const Icon(Icons.clear_all),
-                  tooltip: 'Clear Purchased',
+                  tooltip: 'Cancella Acquistati',
                   onPressed: () => _clearPurchasedItems(context),
                 );
               }
@@ -135,7 +135,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                   child: TextField(
                     controller: _itemController,
                     decoration: InputDecoration(
-                      hintText: 'Add a new item...',
+                      hintText: 'Aggiungi un nuovo articolo...',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -173,12 +173,12 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                         Icon(Icons.shopping_cart, size: 64, color: Colors.grey),
                         SizedBox(height: 16),
                         Text(
-                          'Your shopping list is empty',
+                          'La tua lista della spesa è vuota',
                           style: TextStyle(fontSize: 18, color: Colors.grey),
                         ),
                         SizedBox(height: 8),
                         Text(
-                          'Add items to get started',
+                          'Aggiungi articoli per iniziare',
                           style: TextStyle(fontSize: 14, color: Colors.grey),
                         ),
                       ],
@@ -206,7 +206,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                           bool success = await provider.deleteItem(item.id);
                           if (success) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Item deleted')),
+                              const SnackBar(content: Text('Articolo eliminato')),
                             );
                           }
                         },

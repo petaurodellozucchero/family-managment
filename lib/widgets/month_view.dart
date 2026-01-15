@@ -166,7 +166,7 @@ class _MonthViewState extends State<MonthView> {
                                 Icon(Icons.event_busy, size: 48, color: Colors.grey),
                                 SizedBox(height: 8),
                                 Text(
-                                  'No events for this day',
+                                  'Nessun evento per questo giorno',
                                   style: TextStyle(fontSize: 16, color: Colors.grey),
                                 ),
                               ],

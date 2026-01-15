@@ -62,26 +62,26 @@ class _CalendarScreenState extends State<CalendarScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Family Calendar', style: TextStyle(fontSize: 22)),
+        title: const Text('Calendario Familiare', style: TextStyle(fontSize: 22)),
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: Colors.white,
           labelStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           tabs: const [
-            Tab(text: 'Day'),
-            Tab(text: 'Week'),
-            Tab(text: 'Month'),
+            Tab(text: 'Giorno'),
+            Tab(text: 'Settimana'),
+            Tab(text: 'Mese'),
           ],
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.today),
-            tooltip: 'Today',
+            tooltip: 'Oggi',
             onPressed: _selectToday,
           ),
           IconButton(
             icon: const Icon(Icons.calendar_month),
-            tooltip: 'Pick Date',
+            tooltip: 'Scegli Data',
             onPressed: _pickDate,
           ),
         ],
@@ -108,7 +108,7 @@ class _CalendarScreenState extends State<CalendarScreen>
                     TextButton(
                       onPressed: _selectToday,
                       child: const Text(
-                        'Today',
+                        'Oggi',
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -163,7 +163,7 @@ class _CalendarScreenState extends State<CalendarScreen>
           final familyMemberProvider = Provider.of<FamilyMemberProvider>(context, listen: false);
           if (familyMemberProvider.familyMembers.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('No family members found. Please set up family members first.')),
+              const SnackBar(content: Text('Nessun membro della famiglia trovato. Configura i membri prima.')),
             );
             return;
           }
@@ -177,7 +177,7 @@ class _CalendarScreenState extends State<CalendarScreen>
           );
         },
         icon: const Icon(Icons.add),
-        label: const Text('New Event', style: TextStyle(fontSize: 16)),
+        label: const Text('Nuovo Evento', style: TextStyle(fontSize: 16)),
       ),
     );
   }
