@@ -103,13 +103,9 @@ class _MonthViewState extends State<MonthView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: displayCreators.map((creatorId) {
                       // Find the family member who created this event
-                      FamilyMember? creator;
-                      try {
-                        creator = familyMemberProvider.familyMembers
-                            .firstWhere((m) => m.id == creatorId);
-                      } catch (_) {
-                        creator = null;
-                      }
+                      FamilyMember? creator = familyMemberProvider.familyMembers
+                          .where((m) => m.id == creatorId)
+                          .firstOrNull;
                       
                       final markerColor = creator != null
                           ? ColorUtils.hexToColor(creator.color)

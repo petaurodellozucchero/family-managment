@@ -17,13 +17,9 @@ class EventCard extends StatelessWidget {
     return Consumer<FamilyMemberProvider>(
       builder: (context, familyMemberProvider, child) {
         // Find the family member assigned to this event
-        FamilyMember? assignedMember;
-        try {
-          assignedMember = familyMemberProvider.familyMembers
-              .firstWhere((m) => m.id == event.assignedTo);
-        } catch (_) {
-          assignedMember = null;
-        }
+        FamilyMember? assignedMember = familyMemberProvider.familyMembers
+            .where((m) => m.id == event.assignedTo)
+            .firstOrNull;
         
         // Use the assigned member's current color, or fallback to event's stored color
         final eventColor = assignedMember != null
