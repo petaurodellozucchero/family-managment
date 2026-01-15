@@ -32,7 +32,7 @@ class DayView extends StatelessWidget {
               const Icon(Icons.calendar_today, size: 20),
               const SizedBox(width: 8),
               Text(
-                DateFormat('EEEE, MMMM d, y').format(selectedDate),
+                DateFormat('EEEE d MMMM y', 'it').format(selectedDate),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

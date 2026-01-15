@@ -67,7 +67,7 @@ class WeekView extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          DateFormat('EEE').format(day),
+                          DateFormat('EEE', 'it').format(day),
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -78,7 +78,7 @@ class WeekView extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          DateFormat('MMM d').format(day),
+                          DateFormat('d MMM', 'it').format(day),
                           style: TextStyle(
                             fontSize: 16,
                             color: isToday

@@ -150,7 +150,7 @@ class _MonthViewState extends State<MonthView> {
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Text(
-                      DateFormat('EEEE, MMMM d').format(_selectedDay),
+                      DateFormat('EEEE d MMMM', 'it').format(_selectedDay),
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

@@ -337,7 +337,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                           child: OutlinedButton.icon(
                             icon: const Icon(Icons.calendar_today),
                             label: Text(
-                              DateFormat('MMM d, y').format(_startDate),
+                              DateFormat('d MMM y', 'it').format(_startDate),
                               style: const TextStyle(fontSize: 16),
                             ),
                             onPressed: _selectStartDate,
@@ -373,7 +373,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                           child: OutlinedButton.icon(
                             icon: const Icon(Icons.calendar_today),
                             label: Text(
-                              DateFormat('MMM d, y').format(_endDate),
+                              DateFormat('d MMM y', 'it').format(_endDate),
                               style: const TextStyle(fontSize: 16),
                             ),
                             onPressed: _selectEndDate,
